@@ -12,8 +12,6 @@ namespace Code_First_Practice
 {
     public partial class Register : Form
     {
-        db db = new db();
-        //
         private const int WM_NCHITTEST = 0x84;
         private const int HT_CLIENT = 0x1;
         private const int HT_CAPTION = 0x2;
@@ -26,11 +24,6 @@ namespace Code_First_Practice
         public Register()
         {
             InitializeComponent();
-        }
-        public void RegisterPerson(Person NewPerson)
-        {
-            db.Persons.Add(NewPerson);
-            db.SaveChanges();
         }
 
         private void btnRegister_Click(object sender, EventArgs e)
@@ -65,7 +58,27 @@ namespace Code_First_Practice
                     NewPerson.MobileNumber = txtMobileNumber.Text;
                     NewPerson.SexType = (rdbMan.Checked ? true : false);
                     //
-                    RegisterPerson(NewPerson);
+                    if (!NewPerson.ExistPerson(NewPerson))
+                    {
+                        bool RegisterResult = NewPerson.RegisterPerson(NewPerson);
+                        if (RegisterResult)
+                        {
+                            lblWarning.Text = "ثبت اطلاعات با موفقیت انجام شد.";
+                            //
+                            txtFullName.Clear();
+                            txtNationCode.Clear();
+                            txtMobileNumber.Clear();
+                            rdbMan.Checked = true;
+                        }
+                        else
+                        {
+                            lblWarning.Text = "در ثبت اطلاعات خطایی رخ داده است.";
+                        }
+                    }
+                    else
+                    {
+                        lblWarning.Text = "این کد ملی قبلا ثبت شده است.";
+                    }
                 }
                 else
                 {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Code_First_Practice
 {
-    class db:DbContext
+    public class db:DbContext
     {
         public db():base("name=ConString")
         {
